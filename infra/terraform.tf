@@ -6,12 +6,16 @@ variable "region" {
   type = string
 }
 
-resource "aws_s3_bucket" "wipro-release" {
-  bucket = "wipro-release-uk"
+variable "release_bucket_name" {
+  type = string
+}
+
+resource "aws_s3_bucket" "release" {
+  bucket = var.release_bucket_name
   acl    = "private"
 
   tags = {
-    Name        = "wipro-release"
+    Name        = "release"
     Environment = "Prod"
   }
 }
