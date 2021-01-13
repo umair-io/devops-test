@@ -42,9 +42,13 @@ jobs:
     - name: Build
       run: npm run build --if-present
     - name: Tag
+      id: tag
       uses: Klemensas/action-autotag@stable
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    - name:
+      run: |
+          echo "Created tag: ${{ outputs.tag.tagname }}""
 
 
 
