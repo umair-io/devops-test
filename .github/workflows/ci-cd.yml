@@ -57,7 +57,7 @@ jobs:
         aws_secret_access_key: ${{ secrets.AWS_SECRET}}
         aws_bucket: ${{ secrets.AWS_BUCKET }}
         source_dir: '.'
-        destination_dir: steps.tag.outputs.tagname
+        destination_dir: "${{ steps.tag.outputs.tagname }}"
 
 
 
