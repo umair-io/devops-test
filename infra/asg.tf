@@ -1,9 +1,9 @@
-data "aws_ami" "ubuntu-20-latest" {
+data "aws_ami" "amazon-linux-2" {
  most_recent = true
- owners = ["099720109477"]
+ owners = ["amazon"]
  filter {
    name   = "name"
-   values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20*"]
+   values = ["amzn2-ami-hvm*"]
  }
  filter {
       name   = "architecture"
@@ -64,7 +64,7 @@ resource "aws_security_group" "alb-sg" {
 
 resource "aws_launch_template" "wipro-lt" {
   name_prefix   = "wipro-lt"
-  image_id      = data.aws_ami.ubuntu-20-latest.id
+  image_id      = data.aws_ami.amazon-linux-2.id
   instance_type = "t2.micro"
   key_name = aws_key_pair.auth.key_name
   vpc_security_group_ids = [aws_security_group.asg-sg.id]
