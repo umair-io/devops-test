@@ -74,7 +74,9 @@ resource "aws_launch_template" "wipro-lt" {
   instance_type = "t2.micro"
   key_name = aws_key_pair.auth.key_name
   vpc_security_group_ids = [aws_security_group.asg-sg.id]
-
+  iam_instance_profile {
+    name = aws_iam_instance_profile.profile.name
+  }
   user_data = filebase64("setup.sh")
 
   lifecycle {
