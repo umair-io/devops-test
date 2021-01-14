@@ -95,6 +95,7 @@ resource "aws_alb_target_group" "wipro-tg" {
 }
 
 resource "aws_autoscaling_group" "wipro-asg" {
+  name = "wipro-asg"
   vpc_zone_identifier = [ aws_subnet.az1.id, aws_subnet.az2.id]
   desired_capacity    = 2
   max_size            = 4
