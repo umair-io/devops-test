@@ -69,7 +69,8 @@ jobs:
     - uses: chrislennon/action-aws-cli@v1.1
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-    - run: aws autoscaling start-instance-refresh --auto-scaling-group-name wipro-asg --strategy Rolling --preferences MinHealthyPercentage=50,InstanceWarmup=90
+    - name: Deploy to EC2 Instances (ASG Instance Refresh) - Takes around 5 mins to Update App Version on all Instances
+      run: aws autoscaling start-instance-refresh --auto-scaling-group-name wipro-asg --strategy Rolling --preferences MinHealthyPercentage=50,InstanceWarmup=90
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
