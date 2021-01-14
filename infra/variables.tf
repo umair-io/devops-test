@@ -14,3 +14,21 @@ variable "my_key_pair" {
     description = "keypair to access instances in asg"
     default = "deployer-key"
 }
+
+variable "vpc_cidr" {
+    type = string
+    description = "CIDR for the VPC"
+    default = "10.0.0.0/16"
+}
+
+variable "subnet_a_cidr" {
+    type = string
+    description = "CIDR for the Subnet A"
+    default = "10.0.0.0/24"
+}
+
+variable "subnet_b_cidr" {
+    type = string
+    description = "CIDR for the Subnet B"
+    default = "10.0.1.0/24"
+}
