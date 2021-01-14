@@ -6,7 +6,7 @@ variable "region" {
 variable "release_bucket_name" {
   type = string
   description = "bucket name where code will be shipped to"
-  default = "wipro-release-uk"
+  default = "wipro-release-uk-1" #HAS to start with wipro-release to work!!
 }
 
 variable "my_key_pair" {
