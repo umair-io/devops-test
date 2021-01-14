@@ -41,7 +41,7 @@ jobs:
       uses: Klemensas/action-autotag@stable
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-    - name: If no new tag, not deploying. Increment version in Package.json before merging or pushing to master
+    - name: If no new version, not deploying. Increment version in Package.json before merging or pushing to master
       if: steps.tag.outputs.tagname == 0
       run: exit 1
     - name: Use Node.js 10.x
