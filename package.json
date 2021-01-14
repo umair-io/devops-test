@@ -1,6 +1,6 @@
 {
   "name": "example-repo",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Example repo for DevOps test",
   "main": "index.js",
   "scripts": {
