@@ -1,15 +1,3 @@
-provider "aws" {
-  region = var.region
-}
-
-variable "region" {
-  type = string
-}
-
-variable "release_bucket_name" {
-  type = string
-}
-
 resource "aws_s3_bucket" "release" {
   bucket = var.release_bucket_name
   acl    = "private"
@@ -19,4 +7,3 @@ resource "aws_s3_bucket" "release" {
     Environment = "Prod"
   }
 }
-
