@@ -68,7 +68,7 @@ jobs:
         destination_dir: 'latest'  
     - uses: chrislennon/action-aws-cli@v1.1
     - name: Deploy to EC2 Instances (Using ASG Instance Refresh) - Takes around 5 mins to Update App Version on all Instances
-      run: "aws autoscaling start-instance-refresh --auto-scaling-group-name wipro-asg --strategy Rolling --preferences MinHealthyPercentage=50,InstanceWarmup=90"
+      run: "aws s3 ls"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
