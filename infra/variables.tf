@@ -6,7 +6,7 @@ variable "region" {
 variable "release_bucket_name" {
   type = string
   description = "bucket name where code will be shipped to"
-  default = "wipro-release-uk-1"
+  default = "wipro-release-uk"
 }
 
 variable "my_key_pair" {
@@ -31,4 +31,10 @@ variable "subnet_b_cidr" {
     type = string
     description = "CIDR for the Subnet B"
     default = "10.0.1.0/24"
+}
+
+variable "wipro-app-local-port" {
+  type = string
+  description = "local port behind the LB"
+  default = "3000"
 }

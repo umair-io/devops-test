@@ -11,28 +11,22 @@ data "aws_ami" "ubuntu-20-latest" {
   }
 }
 
-data "aws_availability_zones" "all" {}
-
 #Ensure that your ssh public access key exists under ~/.ssh/id_rsa.pub
 resource "aws_key_pair" "auth" {
   key_name   = var.my_key_pair
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
-#create SG for EC2 - port 3000
+#SG for EC2 - port 3000
 resource "aws_security_group" "asg-sg" {
   name        = "wipro-asg-sg"
   description = "All traffic on port 3000 from alb-sg"
   vpc_id = aws_vpc.default.id
 
   ingress {
-    # HTTP
-    from_port   = 80
-    to_port     = 80
-    # from_port   = 3000
-    # to_port     = 3000
+    from_port   = var.wipro-app-local-port
+    to_port     = var.wipro-app-local-port
     protocol    = "TCP"
-    # cidr_blocks = ["0.0.0.0/0"]
     security_groups = [aws_security_group.alb-sg.id]
   }
 
@@ -45,7 +39,7 @@ resource "aws_security_group" "asg-sg" {
   }
 }
 
-#create SG for LB - port 80
+#SG for LB - port 80
 resource "aws_security_group" "alb-sg" {
   name        = "alb-sg"
   description = "Allow HTTP inbound traffic"
@@ -86,7 +80,7 @@ resource "aws_launch_template" "wipro-lt" {
 
 resource "aws_alb_target_group" "wipro-tg" {
   name     = "wipro-tg"
-  port     = 80
+  port     = var.wipro-app-local-port
   protocol = "HTTP"
   vpc_id = aws_vpc.default.id
 
@@ -96,7 +90,7 @@ resource "aws_alb_target_group" "wipro-tg" {
     timeout             = 5    
     interval            = 6    
     path                = ""    
-    port                = "80"  
+    port                = var.wipro-app-local-port  
   }
 }
 

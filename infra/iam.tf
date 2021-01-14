@@ -1,4 +1,4 @@
-
+#Required iam role to give ec2 instances access to s3 bucket which holds code
 resource "aws_iam_role" "ec2-s3-access-role" {
   name               = "s3-role"
   assume_role_policy = <<EOF
