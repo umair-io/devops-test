@@ -26,3 +26,83 @@ Create a public Github repository and push your solution in it. Commit often - w
 
 - `npm test` runs the application tests	- `npm test` runs the application tests
 - `npm start` starts the http server
+
+# Solution
+The solution I came up was to have my CI/CD pipeline provisioned in Github Actions (as it's managed) and built all the required Infra using Terraform hosted in AWS.
+
+## Solution Design 
+![Solution Diagram](images/builtit-exercise-diagram.PNG?raw=true "Solution Diagram")
+
+The solution diagram above shows the Infrastructure to built and how Application is deployed from code in GitHub to being hosted in AWS on multiple servers behind an Application Load Balancer. The resilliance in the solution is provided by it being hosted via an AWS Autoscaling group across two AZs. The solution also ensures zero downtime during a deployment (given an AWS AZ does not become unavailable).
+
+## Pipeline Design
+* Pipeline is split in to 2 parts:
+  * CI
+  * CD
+* Pipeline is run every time a push is made to any branch. However, the CD part of the pipeline only runs when a commit (or merge request) is made against the master branch. 
+* The CD part of the pipeline also requires the a version of the application has been update in the package.json file (else it will fail).
+* After code is tested, pipeline uploads the latest version/tag of code to the s3 bucket (using aws cli) and also uploads the same code to replace the existing "latest" code which ec2 instances in the ASG group will pick up.
+* Finally, Pipeline uses aws cli's autoscaling instance-refresh command to trigger ASG (AutoScalingGroup) to rebuild the instances at which point, the take the latest code from s3 during the initilizing phase. The update is done in a rolling manner to avoid any downtime.
+
+
+## Running the Solution
+### Pre Reqs
+* Terraform installed on the local system.
+* This repo forked.
+* Generated 'Access Key ID' and 'Secret Access Key' and then stored them in the forked Github repo Secrets (Settings->Secrets->New repository secret) e.g.
+  * AWS_KEY = [YOUR ACCESS KEY ID]
+  * AWS_SECRET = [YOUR AWS SECRET ACCESS KEY]
+* Also secrets set for AWS Bucket and AWS Region (matching ones set in infra/variables.tf) e.g.
+  * AWS_BUCKET = 'wipro-release-uk'
+  * AWS_REGION = 'us-east-1'
+
+### Setting Local Computer
+* Clone forked git repo:
+```
+$ git clone git@github.com:[YOUR_FORKED_REPO].git
+```
+* Set aws credentials and region (same as the one set in gitlab secrets) on your computer:
+```
+$ aws configure
+AWS Access Key ID : [YOUR ACCESS KEY ID]
+AWS Secret Access Key : [YOUR AWS SECRET ACCESS KEY]
+Default region name : [YOUR CHOSEN REGION]
+Default output format: [EMPTY]
+```
+
+### Building Infra (using Terraform)
+* Run terraform apply to build all the required Infra:
+```
+cd devops-test/infra
+terraform init
+terraform apply --auto-approve
+```
+
+Output should look something like below (which means your Infra is ready for your pipeline!):
+```
+Apply complete! Resources: 21 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+lb-address = "wipro-alb-745115038.us-west-2.elb.amazonaws.com"
+```
+Make note of the loadbalancer dns address. We will use it later to test the website.
+
+### Running the Pipeline
+To run the pipeline and deploy to AWS, update/increment application version in package.json `(else the deployment won't be successful)`, commit and push the change to the master branch.
+
+* Go to the repo dir.
+```
+cd devops-test
+```
+* Update the version in `package.json`
+* Commit and push
+```
+git commit -am "Updating the app version
+```
+This trigger the pipeline which can viewed under `Actions` section on repo's Github page. 
+
+* After about 5 minutes (takes time as it's rolling update to avoid downtime) visit (or curl) the LoadBalancer's DNS address which was printed in the terraform output:
+```
+curl wipro-alb-XXXXX.XXXXX.elb.amazonaws.com
+```
