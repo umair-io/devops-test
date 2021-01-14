@@ -13,10 +13,8 @@ resource "aws_internet_gateway" "default" {
 
 resource "aws_subnet" "az1" {
     vpc_id = aws_vpc.default.id
-
     cidr_block = var.subnet_a_cidr
     availability_zone = "${var.region}a"
-
     map_public_ip_on_launch = "true"
 
     tags = {
@@ -47,6 +45,7 @@ resource "aws_subnet" "az2" {
 
     cidr_block = var.subnet_b_cidr
     availability_zone = "${var.region}b"
+    map_public_ip_on_launch = "true"
 
     tags = {
         Name = "Subnet B"
