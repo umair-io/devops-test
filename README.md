@@ -31,7 +31,7 @@ Create a public Github repository and push your solution in it. Commit often - w
 The solution I came up was to have my CI/CD pipeline provisioned in Github Actions (as it's managed) and built all the required Infra using Terraform hosted in AWS.
 
 * My Github Actions CI/CD Pipeline:  https://github.com/umair-io/devops-test/actions
-* Hosted Website: wipro-devops.umair.uk (*Will be live until 31/01/2021*).
+* Hosted Website: [wipro-devops.umair.uk](http://wipro-devops.umair.uk/) (*Will be live until 31/01/2021*).
 
 ## Solution Design 
 ![Solution Diagram](images/builtit-exercise-diagram.PNG?raw=true "Solution Diagram")
