@@ -30,6 +30,9 @@ Create a public Github repository and push your solution in it. Commit often - w
 # Solution
 The solution I came up was to have my CI/CD pipeline provisioned in Github Actions (as it's managed) and built all the required Infra using Terraform hosted in AWS.
 
+* My Github Actions CI/CD Pipeline:  https://github.com/umair-io/devops-test/actions
+* Hosted Website: wipro-devops.umair.uk (*Will be live until 31/01/2021*).
+
 ## Solution Design 
 ![Solution Diagram](images/builtit-exercise-diagram.PNG?raw=true "Solution Diagram")
 
@@ -39,10 +42,10 @@ The solution diagram above shows the Infrastructure to built and how Application
 * Pipeline is split in to 2 parts:
   * CI
   * CD
-* Pipeline is run every time a push is made to any branch. However, the CD part of the pipeline only runs when a commit (or merge request) is made against the master branch. 
-* The CD part of the pipeline also requires the a version of the application has been update in the package.json file (else it will fail).
-* After code is tested, pipeline uploads the latest version/tag of code to the s3 bucket (using aws cli) and also uploads the same code to replace the existing "latest" code which ec2 instances in the ASG group will pick up.
-* Finally, Pipeline uses aws cli's autoscaling instance-refresh command to trigger ASG (AutoScalingGroup) to rebuild the instances at which point, the take the latest code from s3 during the initilizing phase. The update is done in a rolling manner to avoid any downtime.
+* Pipeline is run every time a push is made to any branch. However, the CD part of the pipeline only runs when a commit (or a merge request) is made against the master branch. 
+* The CD part of the pipeline also requires that the version of the application has been updated in the `package.json` file (else it will fail).
+* After code is tested, pipeline uploads the latest version/tag of the code to the s3 bucket (using aws cli) and also uploads the same code to replace the existing cide in "latest" dir which ec2 instances in the ASG group will pick up from.
+* Finally, the pipeline uses aws cli's autoscaling instance-refresh command to trigger ASG (AutoScalingGroup) to rebuild the instances at which point, they take the latest code from the s3 bucket during the initialising phase. The update is done in a rolling manner to avoid any downtime.
 
 
 ## Running the Solution
