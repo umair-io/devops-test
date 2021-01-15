@@ -15,6 +15,12 @@ variable "my_key_pair" {
     default = "deployer-key"
 }
 
+variable "instance_type" {
+    type = string
+    description = "Instance type for template"
+    default = "t2.micro"
+}
+
 variable "vpc_cidr" {
     type = string
     description = "CIDR for the VPC"

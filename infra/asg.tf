@@ -65,7 +65,7 @@ resource "aws_security_group" "alb-sg" {
 resource "aws_launch_template" "wipro-lt" {
   name_prefix   = "wipro-lt"
   image_id      = data.aws_ami.amazon-linux-2.id
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
   key_name = aws_key_pair.auth.key_name
   vpc_security_group_ids = [aws_security_group.asg-sg.id]
   iam_instance_profile {
